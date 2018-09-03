@@ -13,6 +13,8 @@ trap _term SIGTERM SIGINT SIGQUIT
 chown :qemu /dev/kvm
 chmod 660 /dev/kvm
 
+# TODO: abort (and log) if fileLocation is not accessible - e.g. noone created the metrics-files subdirectory
+/usr/bin/collectd-prometheus-collector -collectdURL=http://localhost:9090/metrics -fileLocation=/var/run/kubevirt/metrics-files/${VM_NAME}.prom & 
 /usr/sbin/collectd &
 
 virt-launcher $@ &
