@@ -13,6 +13,8 @@ trap _term SIGTERM SIGINT SIGQUIT
 chown :qemu /dev/kvm
 chmod 660 /dev/kvm
 
+/usr/sbin/collectd &
+
 virt-launcher $@ &
 virt_launcher_pid=$!
 while true; do

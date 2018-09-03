@@ -33,6 +33,7 @@ import (
 	"kubevirt.io/kubevirt/pkg/api/v1"
 	diskutils "kubevirt.io/kubevirt/pkg/ephemeral-disk-utils"
 	"kubevirt.io/kubevirt/pkg/log"
+	metrics "kubevirt.io/kubevirt/pkg/pod-metrics"
 	"kubevirt.io/kubevirt/pkg/precond"
 	cmdclient "kubevirt.io/kubevirt/pkg/virt-handler/cmd-client"
 	watchdog "kubevirt.io/kubevirt/pkg/watchdog"
@@ -155,12 +156,15 @@ func InitializeSharedDirectories(baseDir string) error {
 	if err != nil {
 		return err
 	}
-
 	err = os.MkdirAll(GracefulShutdownTriggerDir(baseDir), 0755)
 	if err != nil {
 		return err
 	}
 	err = os.MkdirAll(cmdclient.SocketsDirectory(baseDir), 0755)
+	if err != nil {
+		return err
+	}
+	err = os.MkdirAll(metrics.MetricsFileDirectory(baseDir), 0755)
 	if err != nil {
 		return err
 	}
